@@ -1,7 +1,7 @@
 #!python
 
 
-def is_sorted(items):
+def is_sorted(items, ascend=True):
     """Return a boolean indicating whether given items are in sorted order.
     check the first item, with the item following it. if it is larger, it is not in sorted order
     Running time: 
@@ -15,19 +15,25 @@ def is_sorted(items):
 
     args:
         items - list, list of items to check if sorted
+        ascend - bool, True if checking in ascending arder,
+                        if false checks decending order
     rtrn:
         bool, If sorted True, False if not
     """
-    for i in range(len(items)):
-        if i + 1 == len(items):
-            break
-        if items[i] > items[i+1]:
-            return False
+    if ascend == True:
+        for i in range(len(items) - 1):
+            if items[i] > items[i+1]:
+                return False
+    else:
+        for i in range(len(items)):
+            if items[i] < items[i+1]:
+                return False
+
 
     return True if all([items[i] <= items[i+1] for i in range(len(items) - 1)]) else False
 
 
-def bubble_sort(items):
+def bubble_sort(items, ascend=True):
     """Sort given items by swapping adjacent items that are out of order, and
     repeating until all items are in sorted order.
     check if the item at index i is greater than the item at index i + 1,
@@ -41,33 +47,56 @@ def bubble_sort(items):
 
     args:
         items - list, list of items to check if sorted
+        ascend - bool, True if checking in ascending arder,
+                        if false checks decending order
     rtrn:
         items - list, sorted list
     """
-    # instatiates a variable that stores the number of steps that were taken
-    # if this variable reaches a number that represents the steps that would have been taken,
-    # then it ends the loop.
-    steps = 1
-    last_i = len(items) - 1
-    # initial for loop that loops over the list of n items.
-    for c in range(len(items)):
-        # second for loop, for each loop, loop again and check if it is sorted or not,
-        # if it isnt, then it moves things appropriatley.
-        for i in range(last_i - c):
-            if items[i] > items[i+1]:
-                items[i], items[i + 1] = items[i + 1], items[i]
-                steps = 1
-            else:
-                # if it is sorted already, incrememnt the number of steps, or reset to 1
-                steps += 1            
-        # if the steps reach the number of checks that needed to be done, then break.
-        if steps >= (last_i - c):
-            break
-    return items
-    
+    if ascend == True:
+        # instatiates a variable that stores the number of steps that were taken
+        # if this variable reaches a number that represents the steps that would have been taken,
+        # then it ends the loop.
+        steps = 1
+        last_i = len(items) - 1
+        # initial for loop that loops over the list of n items.
+        for c in range(len(items)):
+            # second for loop, for each loop, loop again and check if it is sorted or not,
+            # if it isnt, then it moves things appropriatley.
+            for i in range(last_i - c):
+                if items[i] > items[i+1]:
+                    items[i], items[i + 1] = items[i + 1], items[i]
+                    steps = 1
+                else:
+                    # if it is sorted already, incrememnt the number of steps, or reset to 1
+                    steps += 1            
+            # if the steps reach the number of checks that needed to be done, then break.
+            if steps >= (last_i - c):
+                break
+        return items
+    else:
+        # instatiates a variable that stores the number of steps that were taken
+        # if this variable reaches a number that represents the steps that would have been taken,
+        # then it ends the loop.
+        steps = 1
+        last_i = len(items) - 1
+        # initial for loop that loops over the list of n items.
+        for c in range(len(items)):
+            # second for loop, for each loop, loop again and check if it is sorted or not,
+            # if it isnt, then it moves things appropriatley.
+            for i in range(last_i - c):
+                if items[i] < items[i+1]:
+                    items[i], items[i + 1] = items[i + 1], items[i]
+                    steps = 1
+                else:
+                    # if it is sorted already, incrememnt the number of steps, or reset to 1
+                    steps += 1            
+            # if the steps reach the number of checks that needed to be done, then break.
+            if steps >= (last_i - c):
+                break
+        return items
 
 
-def selection_sort(items):
+def selection_sort(items, ascend=True):
     """Sort given items by finding minimum item, swapping it with first
     unsorted item, and repeating until all items are in sorted order.
     Does the same for a max variable
@@ -81,63 +110,116 @@ def selection_sort(items):
 
     args:
         items - list, list of items to check if sorted
+        ascend - bool, True if checking in ascending arder,
+                        if false checks decending order
     rtrn:
         items - list, sorted list        
     """
+    if ascend == True:
+        # instantiate last_i to hold the value for the last index
+        last_i = len(items) - 1
 
-    # instantiate last_i to hold the value for the last index
-    last_i = len(items) - 1
+        # iterate through the list
+        for i in range(len(items)):
+            # instatiate variables to be reset every iteration
+            # sets a current max num var to equal the first item in the list, which is ussually the min,
+            # vice versa with min
+            curr_max_num = items[0] 
+            curr_min_num = items[last_i]
+            # stores the index to where the max number will be swapped
+            # vice versa with min
+            max_index = last_i - i
+            min_index = 0 + i
+            # creates two tuples that store a max and min pair
+            # also used to check if it is sorted
+            min_pair, max_pair = tuple(), tuple()
 
-    # iterate through the list
-    for i in range(len(items)):
-        # instatiate variables to be reset every iteration
-        # sets a current max num var to equal the first item in the list, which is ussually the min,
-        # vice versa with min
-        curr_max_num = items[0] 
-        curr_min_num = items[last_i]
-        # stores the index to where the max number will be swapped
-        # vice versa with min
-        max_index = last_i - i
-        min_index = 0 + i
-        # creates two tuples that store a max and min pair
-        # also used to check if it is sorted
-        min_pair, max_pair = tuple(), tuple()
+            # iterate through the list again, enumerating and checking for the max or min pair
+            for x, item in enumerate(items[i:max_index + 1]):
+                if items[x+i] >= curr_max_num:
+                    curr_max_num = items[x+i]
+                    max_pair = (x+i, item)
+                if items[x+i] <= curr_min_num:
+                    curr_min_num = items[x+i]
+                    min_pair = (x+i, item)
 
-        # iterate through the list again, enumerating and checking for the max or min pair
-        for x, item in enumerate(items[i:max_index + 1]):
-            if items[x+i] >= curr_max_num:
-                curr_max_num = items[x+i]
-                max_pair = (x+i, item)
-            if items[x+i] <= curr_min_num:
-                curr_min_num = items[x+i]
-                min_pair = (x+i, item)
+            # checks if no max/min pair was created, then breaks if true
+            # also checks if the pair is the same
+            if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
+                break
 
-        # checks if no max/min pair was created, then breaks if true
-        # also checks if the pair is the same
-        if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
-            break
+            # use the values from the tuple
+            curr_min_i, curr_min_num = min_pair[0], min_pair[1]
+            curr_max_i, curr_max_num = max_pair[0], max_pair[1]
 
-        # use the values from the tuple
-        curr_min_i, curr_min_num = min_pair[0], min_pair[1]
-        curr_max_i, curr_max_num = max_pair[0], max_pair[1]
+            # checks the location to make sure that there is no overlapping,
+            # an overlap could cause it to not sort properly
+            if curr_min_i == max_index and curr_max_i == min_index:
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+            elif curr_max_i == min_index:
+                items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+            else:
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+                items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
 
-        # checks the location to make sure that there is no overlapping,
-        # an overlap could cause it to not sort properly
-        if curr_min_i == max_index and curr_max_i == min_index:
-            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
-        elif curr_max_i == min_index:
-            items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
-            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
-        else:
-            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
-            items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+        # return the list
+        return items
+    else:
+            # instantiate last_i to hold the value for the last index
+        last_i = len(items) - 1
 
-    # return the list
-    return items
+        # iterate through the list
+        for i in range(len(items)):
+            # instatiate variables to be reset every iteration
+            # sets a current max num var to equal the first item in the list, which is ussually the min,
+            # vice versa with min
+            curr_max_num = items[0] 
+            curr_min_num = items[last_i]
+            # stores the index to where the max number will be swapped
+            # vice versa with min
+            max_index = last_i - i
+            min_index = 0 + i
+            # creates two tuples that store a max and min pair
+            # also used to check if it is sorted
+            min_pair, max_pair = tuple(), tuple()
+
+            # iterate through the list again, enumerating and checking for the max or min pair
+            for x, item in enumerate(items[i:max_index + 1]):
+                if items[x+i] <= curr_max_num:
+                    curr_max_num = items[x+i]
+                    max_pair = (x+i, item)
+                if items[x+i] >= curr_min_num:
+                    curr_min_num = items[x+i]
+                    min_pair = (x+i, item)
+
+            # checks if no max/min pair was created, then breaks if true
+            # also checks if the pair is the same
+            if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
+                break
+
+            # use the values from the tuple
+            curr_min_i, curr_min_num = min_pair[0], min_pair[1]
+            curr_max_i, curr_max_num = max_pair[0], max_pair[1]
+
+            # checks the location to make sure that there is no overlapping,
+            # an overlap could cause it to not sort properly
+            if curr_min_i == max_index and curr_max_i == min_index:
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+            elif curr_max_i == min_index:
+                items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+            else:
+                items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+                items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+
+        # return the list
+        return items
 
 
 
-def insertion_sort(items):
+
+def insertion_sort(items, ascend=True):
     """Sort given items by taking first unsorted item, inserting it in sorted
     order in front of items, and repeating until all items are in order.
     Running time:
@@ -153,19 +235,28 @@ def insertion_sort(items):
 
     args:
         items - list, list of items to check if sorted
+        ascend - bool, True if checking in ascending arder,
+                        if false checks decending order
     rtrn:
         items - list, sorted list
     """
-    for i in range(len(items) - 1):
-        m = i
-        while items[m] > items[m+1] and m >= 0:
-            items[m], items[m+1] = items[m+1], items[m]
-            m -= 1
-    return items
+    if ascend == True:
+        for i in range(len(items) - 1):
+            m = i
+            while items[m] > items[m+1] and m >= 0:
+                items[m], items[m+1] = items[m+1], items[m]
+                m -= 1
+        return items
+    else:
+        for i in range(len(items) - 1):
+            m = i
+            while items[m] < items[m+1] and m >= 0:
+                items[m], items[m+1] = items[m+1], items[m]
+                m -= 1
+        return items
 
 if __name__ == "__main__":
-    items = '5 4 3 2 1'.split()
-    print(items, "p")
-    print(insertion_sort(items))
+    items = '1 2 3 4 5'.split()
+    print(bubble_sort(items, False))
 
     
