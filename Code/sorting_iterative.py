@@ -38,29 +38,31 @@ def bubble_sort(items):
     Memory usage:
         o(n) - average
             Doesnt create any new lists or data structures, only searches and manipulates data already stored in memory
+
+    args:
+        items - list, list of items to check if sorted
+    rtrn:
+        items - list, sorted list
     """
-    x = 1
+    # instatiates a variable that stores the number of steps that were taken
+    # if this variable reaches a number that represents the steps that would have been taken,
+    # then it ends the loop.
+    steps = 1
     last_i = len(items) - 1
+    # initial for loop that loops over the list of n items.
     for c in range(len(items)):
-        
-
+        # second for loop, for each loop, loop again and check if it is sorted or not,
+        # if it isnt, then it moves things appropriatley.
         for i in range(last_i - c):
-            curr = i
-
             if items[i] > items[i+1]:
                 items[i], items[i + 1] = items[i + 1], items[i]
-                x = 1
+                steps = 1
             else:
-                x += 1            
-
-        if x >= (last_i - c):
+                # if it is sorted already, incrememnt the number of steps, or reset to 1
+                steps += 1            
+        # if the steps reach the number of checks that needed to be done, then break.
+        if steps >= (last_i - c):
             break
-
-
-
-
-
-
     return items
     
 
@@ -68,11 +70,71 @@ def bubble_sort(items):
 def selection_sort(items):
     """Sort given items by finding minimum item, swapping it with first
     unsorted item, and repeating until all items are in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Repeat until all items are in sorted order
-    # TODO: Find minimum item in unsorted items
-    # TODO: Swap it with first unsorted item
+    Does the same for a max variable
+
+    Running time:
+        o(n^2) - average
+            iterates through the list twice, and checks for both a max and a min
+    Memory usage:
+        o(n) - average
+            uses the same list, creates tuples and overrides them.
+
+    args:
+        items - list, list of items to check if sorted
+    rtrn:
+        items - list, sorted list        
+    """
+
+    # instantiate last_i to hold the value for the last index
+    last_i = len(items) - 1
+
+    # iterate through the list
+    for i in range(len(items)):
+        # instatiate variables to be reset every iteration
+        # sets a current max num var to equal the first item in the list, which is ussually the min,
+        # vice versa with min
+        curr_max_num = items[0] 
+        curr_min_num = items[last_i]
+        # stores the index to where the max number will be swapped
+        # vice versa with min
+        max_index = last_i - i
+        min_index = 0 + i
+        # creates two tuples that store a max and min pair
+        # also used to check if it is sorted
+        min_pair, max_pair = tuple(), tuple()
+
+        # iterate through the list again, enumerating and checking for the max or min pair
+        for x, item in enumerate(items[i:max_index + 1]):
+            if items[x+i] >= curr_max_num:
+                curr_max_num = items[x+i]
+                max_pair = (x+i, item)
+            if items[x+i] <= curr_min_num:
+                curr_min_num = items[x+i]
+                min_pair = (x+i, item)
+
+        # checks if no max/min pair was created, then breaks if true
+        # also checks if the pair is the same
+        if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
+            break
+
+        # use the values from the tuple
+        curr_min_i, curr_min_num = min_pair[0], min_pair[1]
+        curr_max_i, curr_max_num = max_pair[0], max_pair[1]
+
+        # checks the location to make sure that there is no overlapping,
+        # an overlap could cause it to not sort properly
+        if curr_min_i == max_index and curr_max_i == min_index:
+            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+        elif curr_max_i == min_index:
+            items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+        else:
+            items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
+            items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
+
+    # return the list
+    return items
+
 
 
 def insertion_sort(items):
@@ -85,5 +147,8 @@ def insertion_sort(items):
     # TODO: Insert it in sorted order in front of items
 
 if __name__ == "__main__":
-    print(bubble_sort([2, 3, 1, 5, 4,6,9,8,7]))
+    items = '1 2 3 4 5 6 7 8 9 0 1'.split()
+    print(items, "p")
+    print(selection_sort(items))
+
     
