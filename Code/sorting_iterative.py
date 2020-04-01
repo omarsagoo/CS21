@@ -164,7 +164,7 @@ def insertion_sort(items):
     return items
 
 if __name__ == "__main__":
-    items = '14 33 27 10 35 19 42 44'.split()
+    items = '5 4 3 2 1'.split()
     print(items, "p")
     print(insertion_sort(items))
 
