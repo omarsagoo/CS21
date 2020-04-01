@@ -36,7 +36,7 @@ def bubble_sort(items):
         o(n^2) - average  full: o((n(n-1))/2)
             Iterates through the list, and for each iteration, iterates again to check for items to be sorted.
     Memory usage:
-        o(n) - average
+        o(1) - average
             Doesnt create any new lists or data structures, only searches and manipulates data already stored in memory
 
     args:
@@ -140,15 +140,32 @@ def selection_sort(items):
 def insertion_sort(items):
     """Sort given items by taking first unsorted item, inserting it in sorted
     order in front of items, and repeating until all items are in order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Repeat until all items are in sorted order
-    # TODO: Take first unsorted item
-    # TODO: Insert it in sorted order in front of items
+    Running time:
+        o(kn) - best avereage
+            where k is the number of places each item has to be moved,
+            on average the numbers are going to be displaced by a few spots.
+        o(n^2) - worst
+            where it iterates through the list once to the number, 
+            then a second time to place it in the appropriate spot
+    Memory usage: 
+        o(1) - best
+            doesnt create any new data structures, only uses an existing one
+
+    args:
+        items - list, list of items to check if sorted
+    rtrn:
+        items - list, sorted list
+    """
+    for i in range(len(items) - 1):
+        m = i
+        while items[m] > items[m+1] and m >= 0:
+            items[m], items[m+1] = items[m+1], items[m]
+            m -= 1
+    return items
 
 if __name__ == "__main__":
-    items = '1 2 3 4 5 6 7 8 9 0 1'.split()
+    items = '14 33 27 10 35 19 42 44'.split()
     print(items, "p")
-    print(selection_sort(items))
+    print(insertion_sort(items))
 
     
