@@ -1,7 +1,7 @@
 #!python
 
 
-def is_sorted(items, ascend=True):
+def is_sorted(items, reverse=False):
     """Return a boolean indicating whether given items are in sorted order.
     check the first item, with the item following it. if it is larger, it is not in sorted order
     Running time: 
@@ -10,17 +10,17 @@ def is_sorted(items, ascend=True):
         O(m) - best, where m is the the first occurance of the list not being sorted
             iterates through the list until it reaches a point where it is not sorted, in that case it ends
     Memory usage:  
-        O(n)
+        O(1)
             where n is the size of the list. does not create any copies.
 
     args:
         items - list, list of items to check if sorted
-        ascend - bool, True if checking in ascending arder,
+        reverse - bool, False if checking in ascending arder,
                         if false checks decending order
     rtrn:
-        bool, If sorted True, False if not
+        bool, If sorted False, False if not
     """
-    if ascend == True:
+    if reverse == False:
         for i in range(len(items) - 1):
             if items[i] > items[i+1]:
                 return False
@@ -30,29 +30,31 @@ def is_sorted(items, ascend=True):
                 return False
 
 
-    return True if all([items[i] <= items[i+1] for i in range(len(items) - 1)]) else False
+    return True
 
 
-def bubble_sort(items, ascend=True):
+def bubble_sort(items, reverse=False):
     """Sort given items by swapping adjacent items that are out of order, and
     repeating until all items are in sorted order.
     check if the item at index i is greater than the item at index i + 1,
     if it is swap their places, continue looping until all of them are in order
     Running time:
-        o(n^2) - average  full: o((n(n-1))/2)
+        O(n^2) - average  full: O((n(n-1))/2)
             Iterates through the list, and for each iteration, iterates again to check for items to be sorted.
     Memory usage:
-        o(1) - average
+        O(1) - average
             Doesnt create any new lists or data structures, only searches and manipulates data already stored in memory
 
     args:
         items - list, list of items to check if sorted
-        ascend - bool, True if checking in ascending arder,
+        reverse - bool, False if checking in ascending arder,
                         if false checks decending order
     rtrn:
         items - list, sorted list
     """
-    if ascend == True:
+    # sorts in ascending order if False,
+    # descending if False
+    if reverse == False:
         # instatiates a variable that stores the number of steps that were taken
         # if this variable reaches a number that represents the steps that would have been taken,
         # then it ends the loop.
@@ -96,29 +98,31 @@ def bubble_sort(items, ascend=True):
         return items
 
 
-def selection_sort(items, ascend=True):
+def selection_sort(items, reverse=False):
     """Sort given items by finding minimum item, swapping it with first
     unsorted item, and repeating until all items are in sorted order.
     Does the same for a max variable
 
     Running time:
-        o(n^2) - average
+        O(n^2) - average
             iterates through the list twice, and checks for both a max and a min
     Memory usage:
-        o(n) - average
+        O(n) - average
             uses the same list, creates tuples and overrides them.
 
     args:
         items - list, list of items to check if sorted
-        ascend - bool, True if checking in ascending arder,
+        reverse - bool, False if checking in ascending arder,
                         if false checks decending order
     rtrn:
         items - list, sorted list        
     """
-    if ascend == True:
-        # instantiate last_i to hold the value for the last index
-        last_i = len(items) - 1
+    # instantiate last_i to hold the value for the last index
+    last_i = len(items) - 1
 
+    # sorts in ascending order if False,
+    # Descending if False
+    if reverse == False:
         # iterate through the list
         for i in range(len(items)):
             # instatiate variables to be reset every iteration
@@ -129,10 +133,10 @@ def selection_sort(items, ascend=True):
             # stores the index to where the max number will be swapped
             # vice versa with min
             max_index = last_i - i
-            min_index = 0 + i
+            min_index = i
             # creates two tuples that store a max and min pair
             # also used to check if it is sorted
-            min_pair, max_pair = tuple(), tuple()
+            min_pair, max_pair = ((), ())
 
             # iterate through the list again, enumerating and checking for the max or min pair
             for x, item in enumerate(items[i:max_index + 1]):
@@ -143,9 +147,9 @@ def selection_sort(items, ascend=True):
                     curr_min_num = items[x+i]
                     min_pair = (x+i, item)
 
-            # checks if no max/min pair was created, then breaks if true
+            # checks if no max/min pair was created, then breaks if True
             # also checks if the pair is the same
-            if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
+            if min_pair == () or max_pair == () or max_pair == min_pair:
                 break
 
             # use the values from the tuple
@@ -162,13 +166,7 @@ def selection_sort(items, ascend=True):
             else:
                 items[curr_min_i], items[min_index] = items[min_index], items[curr_min_i]
                 items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
-
-        # return the list
-        return items
     else:
-            # instantiate last_i to hold the value for the last index
-        last_i = len(items) - 1
-
         # iterate through the list
         for i in range(len(items)):
             # instatiate variables to be reset every iteration
@@ -182,7 +180,7 @@ def selection_sort(items, ascend=True):
             min_index = 0 + i
             # creates two tuples that store a max and min pair
             # also used to check if it is sorted
-            min_pair, max_pair = tuple(), tuple()
+            min_pair, max_pair = (), ()
 
             # iterate through the list again, enumerating and checking for the max or min pair
             for x, item in enumerate(items[i:max_index + 1]):
@@ -193,9 +191,9 @@ def selection_sort(items, ascend=True):
                     curr_min_num = items[x+i]
                     min_pair = (x+i, item)
 
-            # checks if no max/min pair was created, then breaks if true
+            # checks if no max/min pair was created, then breaks if True
             # also checks if the pair is the same
-            if min_pair == tuple() or max_pair == tuple() or max_pair == min_pair:
+            if min_pair == () or max_pair == () or max_pair == min_pair:
                 break
 
             # use the values from the tuple
@@ -214,33 +212,36 @@ def selection_sort(items, ascend=True):
                 items[curr_max_i], items[max_index] = items[max_index], items[curr_max_i]
 
         # return the list
-        return items
+    return items
 
 
 
 
-def insertion_sort(items, ascend=True):
+def insertion_sort(items, reverse=False):
     """Sort given items by taking first unsorted item, inserting it in sorted
     order in front of items, and repeating until all items are in order.
     Running time:
-        o(kn) - best avereage
+        O(kn) - best avereage
             where k is the number of places each item has to be moved,
             on average the numbers are going to be displaced by a few spots.
-        o(n^2) - worst
+        O(n^2) - worst
             where it iterates through the list once to the number, 
             then a second time to place it in the appropriate spot
     Memory usage: 
-        o(1) - best
+        O(1) - best
             doesnt create any new data structures, only uses an existing one
 
     args:
         items - list, list of items to check if sorted
-        ascend - bool, True if checking in ascending arder,
+        reverse - bool, False if checking in ascending arder,
                         if false checks decending order
     rtrn:
         items - list, sorted list
     """
-    if ascend == True:
+    # sorts in ascending order if False,
+    # descending if false
+    
+    if reverse == False:
         for i in range(len(items) - 1):
             m = i
             while items[m] > items[m+1] and m >= 0:
@@ -253,10 +254,10 @@ def insertion_sort(items, ascend=True):
             while items[m] < items[m+1] and m >= 0:
                 items[m], items[m+1] = items[m+1], items[m]
                 m -= 1
-        return items
+    
 
 if __name__ == "__main__":
-    items = '1 2 3 4 5'.split()
-    print(bubble_sort(items, False))
+    items = '5 4 3 2 1'.split()
+    print(insertion_sort(items))
 
     
