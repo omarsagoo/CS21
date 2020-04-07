@@ -9,38 +9,41 @@ def merge(items1, items2):
     Memory usage:
         O(n) - creates a new list of n size
     """
-    # TODO: Repeat until one list is empty
-    # TODO: Find minimum item in both lists and append it to new list
-    # TODO: Append remaining items in non-empty list to new list
+    
     sorted_list = []
-    i = 0
-    j = 0
-    while i < len(items1) and j < len(items2):
-        if items1[i] <= items2[j]:
+    len_1, len_2 = len(items1), len(items2)
+    i, j = 0, 0
+
+    while i < len_1 and j < len_2:
+        if items1[i] < items2[j]:
             sorted_list.append(items1[i])
             i += 1
         else:
             sorted_list.append(items2[j])
             j += 1
 
-    if len(items1) == i:
-        sorted_list += items2[j:]
-    else:
-        sorted_list += items1[i:]
+    sorted_list.extend(items1[i:]) 
+    sorted_list.extend(items2[j:])
 
     return sorted_list
-
 
 
 def split_sort_merge(items):
     """Sort given items by splitting list into two approximately equal halves,
     sorting each with an iterative sorting algorithm, and merging results into
     a list in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Split items list into approximately equal halves
-    # TODO: Sort each half using any other sorting algorithm
-    # TODO: Merge sorted halves into one list in sorted order
+    Running time: 
+            O(n^2) - sorts a list by splitting it in half
+    Memory usage:
+            o(1) - creates constant amount of new lists
+    """
+    mid_index = len(items) // 2
+
+    sorted_list = merge(sorted(items[:mid_index]), sorted(items[mid_index:]))
+
+    items[:] = sorted_list
+
+    return items
 
 
 def merge_sort(items):
@@ -52,7 +55,18 @@ def merge_sort(items):
     # TODO: Split items list into approximately equal halves
     # TODO: Sort each half by recursively calling merge sort
     # TODO: Merge sorted halves into one list in sorted order
+    if len(items) <= 1:
+        return items
+    
+    half_i = len(items) // 2
 
+    l_half, r_half = items[half_i:], items[:half_i]
+
+    items[:] = merge(merge_sort(l_half), merge_sort(r_half))
+    return items
+
+
+        
 
 def partition(items, low, high):
     """Return index `p` after in-place partitioning given items in range
@@ -80,4 +94,8 @@ def quick_sort(items, low=None, high=None):
     # TODO: Sort each sublist range by recursively calling quick sort
 
 if __name__ == "__main__":
-    print(merge([1,3,5,7,9,9], [2,4,6,8,10]))
+    items = 'Doc Grumpy Happy Sleepy Bashful Sneezy Dopey'.split()
+    print(merge_sort(items))
+    print(items)
+    # print(split_sort_merge(['A', 'B']))
+
