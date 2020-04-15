@@ -79,7 +79,7 @@ class IsSortedTest(unittest.TestCase):
         # ...
 
 
-# class IntegerSortTest(unittest.TestCase):
+class IntegerSortTest(unittest.TestCase):
 
     def test_sort_on_empty_list(self):
         items = []
@@ -215,7 +215,7 @@ def get_sort_function():
 
 
 # If using PyTest, change this variable to the sort function you want to test
-sort = merge_sort
+sort = counting_sort
 
 
 if __name__ == '__main__':
