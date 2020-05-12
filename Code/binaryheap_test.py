@@ -72,7 +72,10 @@ class TestBinaryMinHeap(unittest.TestCase):
             heap.insert(item)
         assert heap.size() == len(items)
         for item in sorted(items):
-            assert heap.delete_min() == item
+            print(heap.items)
+            min_item = heap.delete_min()
+            print(min_item)
+            assert min_item == item
         assert heap.size() == 0
 
     def test_parent_index(self):

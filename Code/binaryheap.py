@@ -58,8 +58,8 @@ class BinaryMinHeap(object):
         # Move the last item to the root and bubble down to the leaves
         last_item = self.items.pop()
         self.items[0] = last_item
-        if self.size() > 1:
-            self._bubble_down(0)
+        
+        self._bubble_down(0)
         return min_item
 
     def replace_min(self, item):
@@ -110,16 +110,16 @@ class BinaryMinHeap(object):
         # Get the index of the item's left and right children
         left_index = self._left_child_index(index)
         right_index = self._right_child_index(index)
-        if left_index > self._last_index() or right_index > self._last_index():
+        if left_index > self._last_index():
             return  # This index is a leaf node (does not have any children)
         # Get the item's value
         item = self.items[index]
         # Determine which child item to compare this node's item to
         child_index = left_index
-        if self.items[right_index] < self.items[left_index]:
+        if right_index <= self._last_index() and self.items[right_index] < self.items[left_index]:
             child_index = right_index
 
-        # TODO: Swap this item with a child item if values are out of order
+        # Swap this item with a child item if values are out of order
         child_item = self.items[child_index]
         if item > child_item:
             self.items[index], self.items[child_index] = self.items[child_index], self.items[index]
@@ -143,6 +143,27 @@ class BinaryMinHeap(object):
     def _right_child_index(self, index):
         """Return the right child index of the item at the given index."""
         return (index << 1) + 2  # Shift left to multiply by 2
+
+def heapSort(items):
+    """Sorts a list of given items using a MinHeap Data structure. mutates the given array
+    Time Complexity:
+        O(nlogn) - for every item removed from the top of the heap, the replaced item must bubble down to its appropriate
+                        spot to satisfy the minHeap methods.
+    Space Complexity:
+        O(n) - creates a new heap of size n items
+    Args:
+        items - list
+    return
+        None"""
+    heap = BinaryMinHeap(items)
+    index = 0
+    for _ in range(len(items)):
+        item = heap.delete_min()
+        print(item)
+        items[index] = item
+        index += 1
+
+    
 
 
 def test_binary_min_heap():
@@ -172,3 +193,6 @@ def test_binary_min_heap():
 
 if __name__ == '__main__':
     test_binary_min_heap()
+    items = [1,3,2,5,6,4,3,8, 7,9]
+    heapSort(items)
+    print(items)
