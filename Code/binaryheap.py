@@ -144,6 +144,10 @@ class BinaryMinHeap(object):
         """Return the right child index of the item at the given index."""
         return (index << 1) + 2  # Shift left to multiply by 2
 
+    def heapify(self, array):
+        """Given an array, returns the array satisfying the heap requirements"""
+        return BinaryMinHeap(array).items
+
 def heapSort(items):
     """Sorts a list of given items using a MinHeap Data structure. mutates the given array
     Time Complexity:
@@ -155,16 +159,17 @@ def heapSort(items):
         items - list
     return
         None"""
-    heap = BinaryMinHeap(items)
+    heap = heapify(items)
     index = 0
     for _ in range(len(items)):
         item = heap.delete_min()
-        print(item)
         items[index] = item
         index += 1
 
-    
-
+def heapify(items):
+    """Returns an array that satisfies the heap attributes"""
+    items = BinaryMinHeap(items)
+    return items
 
 def test_binary_min_heap():
     # Create a binary min heap of 7 items
@@ -193,6 +198,6 @@ def test_binary_min_heap():
 
 if __name__ == '__main__':
     test_binary_min_heap()
-    items = [1,3,2,5,6,4,3,8, 7,9]
-    heapSort(items)
-    print(items)
+    # items = [1,3,2,5,6,4,3,8, 7,9]
+    # heapSort(items)
+    # print(items)
