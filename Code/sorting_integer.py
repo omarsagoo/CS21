@@ -7,9 +7,11 @@ def counting_sort(numbers):
     then looping over counts and copying that many numbers into output list.
     Running time: 
         best: O(1) - if the list is empty, or if it is a list of the same number
-        average: O(n + k) - where k is the range of the numbers in the list.   (best if k < n)
+        average: O(n * k) - where k is the range of the numbers in the list.   (best if k < n)
     Memory usage: 
-        average: O(k) - where k is the range of the numbers in the list."""
+        average: O(k) - where k is the range of the numbers in the list.
+    Args:
+        numbers - array of integers"""
     # base case, if the list is empty or only has one item in it, then it is already sorted
     if len(numbers)  <= 1:
         return
@@ -40,13 +42,13 @@ def counting_sort(numbers):
 def bucket_sort(numbers, num_buckets=10):
     """Sort given numbers by distributing into buckets representing subranges,
     then sorting each bucket and concatenating all buckets in sorted order.
-    TODO: Running time: ??? Why and under what conditions?
-    TODO: Memory usage: ??? Why and under what conditions?"""
-    # TODO: Loop over given numbers and place each item in appropriate bucket
-    # TODO: Sort each bucket using any sorting algorithm (recursive or another)
-    # TODO: Loop over buckets and append each bucket's numbers into output list
-    # FIXME: Improve this to mutate input instead of creating new output list
-     # base case, if the list is empty or only has one item in it, then it is already sorted
+    Running time: 
+        average: O(n^2)
+    Memory usage: 
+        average: O(k) - where k is the range of the numbers in the list.
+    Args:
+        numbers - array of integers"""
+
     if len(numbers)  <= 1:
         return
 
@@ -58,23 +60,27 @@ def bucket_sort(numbers, num_buckets=10):
     if max_num == min_num:
         return
 
-    # create  a list of 0's with a length of the range of the numbers.
-    buckets = [0] * num_buckets
+    # create  a list of lists with a length of the range of the numbers.
+    buckets = [[] for _ in range(num_buckets)]
+    
     for num in numbers:
-        if buckets[(num * max_num) % num_buckets] == 0:
-            bucket = deque()
-            bucket.append(num)
-            print(bucket)
-            buckets[(num * max_num) % num_buckets] = bucket
-        else:
-            buckets[(num * max_num) % num_buckets].append(num)
+        index = int(num / max_num * (num_buckets - 1))
+        buckets[index].append(num)
 
+    for bucket in buckets:
+        bucket.sort()
 
-
-    print(buckets)
+    index = 0
+    for bucket in buckets:
+        for value in bucket:
+            numbers[index] = value
+            index += 1
+    
 
 if __name__ == "__main__":
-    print(bucket_sort([3,5,3,2,3,6,7,9,18, 26,9]))
+    items = [3,5,3,2,3,6,7,9,9,3]
+    print(bucket_sort(items))
+    print(items)
     # d = deque()
     # d.append(1)
     # d.append(3)

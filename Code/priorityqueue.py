@@ -60,7 +60,9 @@ class PriorityQueue(object):
 
         if self.heap._last_index != 0:
             self.heap._bubble_down(0)
-            
+
         return min_item
         
+class PriorityStack(PriorityQueue):
+    pass
 
