@@ -64,9 +64,15 @@ def bucket_sort(numbers, num_buckets=10):
     buckets = [[] for _ in range(num_buckets)]
     
     for num in numbers:
-        index = int(num / max_num * (num_buckets - 1))
+        index = int(num % max_num) // (max_num // num_buckets)
+        if index == 0:
+            if num == max_num:
+                index = len(buckets) - 1
+        elif index > max_num:
+            index = len(buckets) - index
         buckets[index].append(num)
 
+    print(buckets)
     for bucket in buckets:
         bucket.sort()
 
@@ -78,8 +84,8 @@ def bucket_sort(numbers, num_buckets=10):
     
 
 if __name__ == "__main__":
-    items = [3,5,3,2,3,6,7,9,9,3]
-    print(bucket_sort(items))
+    items = [1,9,11,22,31,44,41,51,61,71,81,91,100]
+    bucket_sort(items,5)
     print(items)
     # d = deque()
     # d.append(1)
